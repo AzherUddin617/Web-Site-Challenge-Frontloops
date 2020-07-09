@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Progress navigation</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+</head>
+
+<body>
+  <div class="content-box">
+
+    <div class="content left" id="content__left">
+
+      <p class="content__list-btn list-1 active">
+        <span class="list-no">1</span>
+        Choose title
+      </p>
+
+      <p class="content__list-btn list-2">
+        <span class="list-no">2</span>
+        Choose description
+      </p>
+
+      <p class="content__list-btn list-3">
+        <span class="list-no">3</span>
+        Confirm data
+      </p>
+
+    </div>
+    <div class="content right" id="content__right">
+
+      <div class="content__item item-1 active">
+        <div class="content__text">Choose title content</div>
+        <div class="content__buttons">
+          <button class="content__btn btn-main btn-next">Submit title</button>
+        </div>
+      </div>
+
+      <div class="content__item item-2">
+        <div class="content__text">Choose description content</div>
+        <div class="content__buttons">
+          <button class="content__btn btn-main btn-prev">Back</button>
+          <button class="content__btn btn-main btn-next">Submit description</button>
+        </div>
+      </div>
+
+      <div class="content__item item-3">
+        <div class="content__text">Are you happy now?</div>
+        <div class="content__buttons">
+          <button class="content__btn btn-main btn-prev">No, go back</button>
+          <button class="content__btn btn-main btn-end" id="btn-end">Yes, go ahead</button>
+        </div>
+      </div>
+
+      <div class="content__item item-4" id="content-end">
+        <div class="content__text">Ok, we're done. Thanks for sending us your data!</div>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- Javascript -->
+  <script src="dom.js"></script>
+</body>
+
+</html>

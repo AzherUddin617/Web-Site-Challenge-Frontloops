@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+    <title>Show on scroll</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+      }
+      body {
+        box-sizing: border-box;
+        background-color: #679b9b;
+        padding: 4rem 0;
+        scroll-behavior: smooth;
+      }
+      .content {
+        width: 80%;
+        max-width: 900px;
+        height: 400px;
+        margin: 2rem auto;
+        border-radius: 0.5rem;
+        background-color: #aacfcf;
+        box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.15);
+
+        opacity: 0;
+        transform: translateY(10%);
+        transition-property: opacity, transform;
+        transition-duration: 1s;
+      }
+      .content.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+</head>
+<body>
+    <div id="contents">
+      <div class="content 1"></div>
+      <div class="content 2"></div>
+      <div class="content 3"></div>
+      <div class="content 4"></div>
+      <div class="content 5"></div>
+      <div class="content 6"></div>
+      <div class="content 7"></div>
+      <div class="content 8"></div>
+    </div>
+
+    <script>
+      const classNames = {
+        activeState: 'active',
+        content: 'content'
+      }
+      const contents = document.querySelectorAll('.' + classNames.content);
+      const contentPopH = 40;
+
+      let wHeight = window.innerHeight;
+        for (c of contents) {
+          if (c.getBoundingClientRect().top < wHeight - contentPopH && !c.classList.contains(classNames.activeState)) {
+            
+            c.classList.add(classNames.activeState);
+          }
+        }
+
+      addEventListener('scroll', e => {
+        wHeight = window.innerHeight;
+        for (c of contents) {
+          if (c.getBoundingClientRect().top < wHeight - contentPopH && !c.classList.contains(classNames.activeState)) {
+            
+            c.classList.add(classNames.activeState);
+          }
+
+          if (c.getBoundingClientRect().top > wHeight + contentPopH && c.classList.contains(classNames.activeState)) {
+            
+            c.classList.remove(classNames.activeState);
+          }
+        }
+      });
+    </script>
+</body>
+</html>

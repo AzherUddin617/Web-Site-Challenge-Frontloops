@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+<head>
+    <title>Accordion</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+      }
+      body {
+        background-color: #F6C15F;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        padding: 2rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: start;
+            -ms-flex-align: start;
+                align-items: flex-start;
+      }
+      .contents {
+        width: 80%;
+        max-width: 600px;
+        margin-top: 25vh;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        --radius: 5px;
+        border-radius: var(--radius);
+      }
+      .content {
+        padding: 0 1rem;
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
+        -webkit-transition: background-color 0.3s;
+             -o-transition: background-color 0.3s;
+        transition: background-color 0.3s;
+      }
+      .content:not(:last-child) {
+        border-bottom: 1px solid #ccc;
+      }
+      .content:first-child {
+        border-radius: var(--radius) var(--radius) 0 0;
+      }
+      .content:last-child {
+        border-radius: 0 0 var(--radius) var(--radius);
+      }
+      .content:hover {
+        background-color: #f3f3f3;
+      }
+      .content::before {
+        display: block;
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        opacity: 0;
+        border-radius: 0;
+        -webkit-transition-property: border-radius, -webkit-transform, -webkit-box-shadow;
+                transition-property: border-radius, -webkit-transform, -webkit-box-shadow;
+        -o-transition-property: transform, border-radius, box-shadow;
+           transition-property: transform, border-radius, box-shadow;
+           transition-property: transform, border-radius, box-shadow, -webkit-transform, -webkit-box-shadow;
+        -webkit-transition-duration: 0.4s;
+             -o-transition-duration: 0.4s;
+                transition-duration: 0.4s;
+      }
+      .content.active::before {
+        opacity: 1;
+        -webkit-transform: scale(1.1, 1.01);
+            -ms-transform: scale(1.1, 1.01);
+                transform: scale(1.1, 1.01);
+        border-radius: 0.5rem;
+        -webkit-box-shadow: 0 1px 12px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 1px 12px rgba(0, 0, 0, 0.2);
+      }
+      .content-texts {
+        position: relative;
+        z-index: 1;
+      }
+      .content-title {
+        padding: 2rem 0;
+      }
+      .content-detail {
+        --inHeight: 0;
+        overflow: hidden;
+      }
+      .content-detail.hide {
+        height: 0;
+        -webkit-transition: height 0.3s;
+             -o-transition: height 0.3s;
+        transition: height 0.3s;
+      }
+      .content.active .content-detail {
+        height: var(--inHeight);
+      }
+      .content-detail .text {
+        padding-bottom: 1rem;
+      }
+    </style>
+</head>
+<body>
+  <div class="contents" id="contents">
+
+    <div class="content">
+      <div class="content-texts">
+
+        <h3 class="content-title">1. Hotel facilites</h3>
+        <div class="content-detail">
+          <p class="text">We've got everything you need covered, from hairdryer to ski storage at the lobby. Don't worry about that! Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, optio?</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="content-texts">
+
+        <h3 class="content-title">2. Closet Beach</h3>
+        <div class="content-detail">
+          <p class="text">We've got no real beach anywhere closely to our hotel. There are mountains though!</p>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="content-texts">
+
+        <h3 class="content-title">3. How to get here</h3>
+        <div class="content-detail">
+          <p class="text">By plain, you silly.</p>
+        </div>
+        
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const names = {
+      active: 'active',
+      hide: 'hide',
+      contents: 'contents',
+      content: 'content',
+      contentDetail: 'content-detail'
+    }
+    const contents = document.querySelectorAll('.' + names.content);
+    const contentDetails = document.querySelectorAll('.' + names.contentDetail);
+
+    contentDetails.forEach(cd => {
+      const height = cd.getBoundingClientRect().height;
+      cd.setAttribute('style', `--inHeight: ${height}px`);
+      cd.classList.add(names.hide);
+    })
+
+    let activeContent;
+
+    function onClick() {
+      this.classList.toggle(names.active);
+
+      if (activeContent !== this) {
+        if (activeContent)
+          activeContent.classList.remove(names.active);
+
+        activeContent = this;
+      }
+    }
+
+    contents.forEach(content => {
+      content.addEventListener('click', onClick);
+    });
+  </script>
+</body>
+</html>
+
+<!--
+    Build an animated accordion component.
+    Whenever accordion title is clicked - its section should be toggled with animation.
+    Only one section can be active at a time.
+    Section contents can have any number of text lines inside.
+-->

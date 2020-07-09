@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+    <title>Week</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        background-color: #844BA8;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .content-box {
+        width: 800px;
+        padding: 1.5rem;
+        background-color: #fff;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
+      }
+      .change-btn {
+        border: none;
+        outline: none;
+        --btnSize: 3rem;
+        width: var(--btnSize);
+        height: var(--btnSize);
+        background-color: #F1F1F1;
+        padding: calc(var(--btnSize) / 3);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .btn-dot {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+      }
+      .change-btn:hover .btn-dot {
+        background-color: orangered;
+      }
+      .dates {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+      }
+      .date {
+        font-size: 1.2rem;
+        text-align: center;
+        flex: 0 0 calc(100% / 7 - 0.25rem);
+      }
+      .date.active {
+        font-weight: 700;
+      }
+    </style>
+</head>
+<body>
+  <div class="content-box">
+    <button class="change-btn left" id="btn-left">
+      <span class="btn-dot"></span>
+    </button>
+
+    <div class="dates week" id="week-container">
+      <p class="date"></p>
+      <p class="date"></p>
+      <p class="date"></p>
+      <p class="date"></p>
+      <p class="date"></p>
+      <p class="date"></p>
+      <p class="date"></p>
+    </div>
+
+    <button class="change-btn right" id="btn-right">
+      <span class="btn-dot"></span>
+    </button>
+  </div>
+  <script>
+    const week = document.getElementById('week-container');
+    const dates = week.querySelectorAll('.date');
+    const btnLeft = document.getElementById('btn-left');
+    const btnRight = document.getElementById('btn-right');
+    const weekTexts = [
+      ["May 10", "May 11", "May 12", "May 13", "May 14", "May 15", "May 16"],
+      ["May 17", "May 18", "May 19", "May 20", "May 21", "May 22", "May 23"],
+      ["May 24", "May 25", "May 26", "May 27", "May 28", "May 29", "May 30"],
+      ["May 31", "Jun 1", "Jun 2", "Jun 3", "Jun 4", "Jun 5", "Jun 6"],
+      ["Jun 7", "Jun 8", "Jun 9", "Jun 10", "Jun 11", "Jun 12", "Jun 13"],
+      ["Jun 14", "Jun 15", "Jun 16", "Jun 17", "Jun 18", "Jun 19", "Jun 20"],
+      ["Jun 21", "Jun 22", "Jun 23", "Jun 24", "Jun 25", "Jun 26", "Jun 27"],
+      ["Jun 28", "Jun 29", "Jun 30", "Jul 1", "Jul 2", "Jul 3", "Jul 4"]
+    ];
+    const maxWeek = weekTexts.length -1;
+    let activeIndex = { r: 3, c: 2 }, currentWeek = 3;    
+
+    const renderWeek = () => {
+      for (let i=0; i<7; i++) {
+        dates[i].textContent = weekTexts[currentWeek][i];
+        if (currentWeek == activeIndex.r && i == activeIndex.c)
+          dates[i].classList.add('active');
+        else if (dates[i].classList.contains('active'))
+          dates[i].classList.remove('active');
+      }
+    }
+    renderWeek();
+
+    btnLeft.addEventListener('click', () => {
+      if (currentWeek > 0) {
+        currentWeek--;
+        renderWeek();
+      }
+    });
+    btnRight.addEventListener('click', () => {
+      if (currentWeek < maxWeek) {
+        currentWeek++;
+        renderWeek();
+      }
+    });
+  </script>
+</body>
+</html>
+        <!--
+            Build a card displaying the current week days in a format {Month} {Date}.
+            There should be controls to go to next/previous week.
+            Today's date should displayed in bold.
+        -->

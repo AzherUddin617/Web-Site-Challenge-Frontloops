@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+    <title>Color picker</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+      }
+      body {
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      #section-main {
+        --bgColor: #5097D6;
+        background-color: var(--bgColor);
+        height: 100vh;
+        padding: 2rem;
+        position: relative;
+      }
+      .top {
+        width: 80%;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 2rem;
+        background-color: #fff;
+        text-align: center;
+        font-size: 1.4rem;
+        font-weight: 500;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
+      }
+      #color-bar {
+        /* width: 80%;
+        max-width: 800px; */
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 2rem;
+        border-radius: 0.5rem;
+        display: flex;
+        position: absolute;
+        bottom: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      #color-bar.active {
+        opacity: 1;
+      }
+      #color-bar .color {
+        background-color: var(--hex);
+        background-clip: padding-box;
+        width: 8rem;
+        height: 8rem;
+        border-radius: 0.5rem;
+        margin: 0 0.5rem;
+        border: 3px solid transparent;
+        transition: border-color 0.1s ease;
+      }
+      #color-bar .color.active {
+        border-color: #fff;
+      }
+    </style>
+</head>
+<body>
+
+  <section id="section-main">
+    <div class="top">
+      <p class="top-text">Press Shift + Tab to change color.</p>
+    </div>
+
+    <div id="color-bar">
+      <div class="color blue active" style="--hex: #5097D6" data-hex="#5097D6"></div>
+      <div class="color green" style="--hex: #64C87A" data-hex="#64C87A"></div>
+      <div class="color yellow" style="--hex: #E79F3C" data-hex="#E79F3C"></div>
+      <div class="color red" style="--hex: #D65745" data-hex="#D65745"></div>
+      <div class="color purple" style="--hex: #925EB1" data-hex="#925EB1"></div>
+    </div>
+  </section>
+   
+  <script>
+    const sectionMain = document.getElementById('section-main');
+    const colorBar = document.getElementById('color-bar');
+    const colors = colorBar.querySelectorAll('.color');
+
+    let shiftDown = false, activeIndex = 0, onInterval = false, intervalTime = 200;
+    setColor();
+
+    document.addEventListener('keydown', e => {
+      let key = e.key.toLowerCase();
+      if (key === 'tab')
+        e.preventDefault();
+
+      if (key === 'shift' && !shiftDown) {
+        shiftDown = true;
+        colorBar.classList.add('active');
+      }
+      if (key === 'tab' && shiftDown && !onInterval) {
+        colors[activeIndex].classList.remove('active');
+        activeIndex = activeIndex < colors.length-1 ? activeIndex + 1 : 0;
+        setColor();
+
+        onInterval = true;
+        setTimeout(() => onInterval = false, intervalTime);
+      }
+    });
+    document.addEventListener('keyup', e => {
+      if (shiftDown && e.key.toLowerCase() === 'shift') {
+        shiftDown = false;
+        colorBar.classList.remove('active');
+      }
+      if (e.key.toLowerCase() === 'tab') {
+        onInterval = false;
+      }
+    });
+
+    function setColor() {
+      colors[activeIndex].classList.add('active');
+      sectionMain.setAttribute('style', `--bgColor: ${colors[activeIndex].dataset.hex}`);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Segmented control</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="content-box">
+      
+      <div class="content desktop" id="content-desktop">
+        <p class="content__btn first active">Sort by price</p>
+        <p class="content__btn">Sort by name</p>
+        <p class="content__btn last">Sort by relevance</p>
+      </div>
+
+      <div class="content mobile" id="content-mobile">
+        <p class="content__active-state" id="active-state">Sort by price</p>
+        <div class="content__select" id="content-select">
+          <p class="content__option">Sort by price</p>
+          <p class="content__option">Sort by name</p>
+          <p class="content__option">Sort by relevance</p>
+        </div>
+        <img src="select.png" alt="" class="content__select-img">
+      </div>
+
+    </div>
+
+    <!-- JS -->
+    <script src="dom.js"></script>
+</body>
+</html>

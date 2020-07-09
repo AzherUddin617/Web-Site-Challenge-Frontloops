@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+<head>
+    <title>Code</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+      }
+      body {
+        box-sizing: border-box;
+        background-color: #B64E69;
+        font-family:Arial, Helvetica, sans-serif;
+        min-height: 100vh;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      span {
+        display: inline-block;
+      }
+      .content-box {
+        background-color: #fff;
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        border: 2px solid #ccc;
+        box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+      .content__title {
+        font-size: 2rem;
+        font-weight: 500;
+      }
+      .code-area {
+        --mainGrey: #ccc;
+        --codeFont: 2rem;
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .code-text {
+        font-size: var(--codeFont);
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 3px solid var(--mainGrey);
+        border-left: none;
+        cursor: text;
+      }
+      .code-text.first {
+        border: 3px solid var(--mainGrey);
+      }
+      .code-text.active {
+        background-color: #eee;
+      }
+      .code-hr {
+        width: 1.5rem;
+        height: 2px;
+        background-color: var(--mainGrey);
+        margin: 0 1rem;
+      }
+      .code-text .text-bar {
+        height: var(--codeFont);
+        width: 2px;
+        background-color: #111;
+        visibility: hidden;
+      }
+      .code-text.active .text-bar {
+        visibility: visible;
+        animation: textBarAnim 1s ease infinite;
+      }
+      @keyframes textBarAnim {
+        60% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0.1;
+        }
+      }
+      .btn {
+        border: none;
+        outline: none;
+        padding: 1rem;
+        margin-top: 1rem;
+        font-size: 1.5rem;
+        font-weight: 500;
+        cursor: pointer;
+      }
+    </style>
+</head>
+<body>
+    <div class="content-box">
+
+      <p class="content__title">Enter code:</p>
+
+      <div class="code-area" id="code-area">
+        <span class="code-text code1 first"><span class="text"></span><span class="text-bar"></span></span>
+        <span class="code-text code2"><span class="text"></span><span class="text-bar"></span></span>
+        <span class="code-text code3"><span class="text"></span><span class="text-bar"></span></span>
+        <span class="code-hr"></span>
+        <span class="code-text code1 first"><span class="text"></span><span class="text-bar"></span></span>
+        <span class="code-text code2"><span class="text"></span><span class="text-bar"></span></span>
+        <span class="code-text code3"><span class="text"></span><span class="text-bar"></span></span>
+      </div>
+
+      <button class="btn btn-submit" id="btn-submit">Submit</button>
+
+    </div>
+
+    <script>
+      const ids = {
+        codeArea: 'code-area',
+        btnSubmit: 'btn-submit'
+      }
+      const classes = {
+        active: 'active',
+        codeText: 'code-text',
+        text: 'text'
+      }
+
+      const codeArea = document.getElementById(ids.codeArea);
+      const codeTexts = codeArea.querySelectorAll('.' + classes.codeText);
+      const btnSubmit = document.getElementById(ids.btnSubmit);
+
+      let activeIndex = 0;
+
+      codeArea.addEventListener('click', e => {
+        const target = e.target;
+
+        if (target.classList.contains(classes.codeText)) {
+
+          if (!codeTexts[activeIndex].classList.contains(classes.active))
+            codeTexts[activeIndex].classList.add(classes.active);
+        }
+      });
+
+      document.addEventListener('keydown', e => {
+        const key = e.key;
+        const activeText = codeTexts[activeIndex].querySelector('.' + classes.text);
+        
+        if (key >= '0' && key <= '9' && codeTexts[activeIndex].classList.contains(classes.active) && activeText.textContent === '') {
+          activeText.textContent = key;
+          toNextKey();
+        }
+        else if (key.toLowerCase() === 'backspace') {
+          if (activeText.textContent === '') {
+            toPrevKey();
+          }
+          else {
+            activeText.textContent = '';
+          }
+        }
+      });
+
+      function toNextKey() {
+        if (activeIndex < codeTexts.length - 1) {
+          codeTexts[activeIndex].classList.remove(classes.active);
+          activeIndex++;
+          codeTexts[activeIndex].classList.add(classes.active);
+        }
+      }
+      function toPrevKey() {
+        if (activeIndex > 0) {
+          codeTexts[activeIndex].classList.remove(classes.active);
+          activeIndex--;
+          codeTexts[activeIndex].classList.add(classes.active);
+        }
+      }
+    </script>
+</body>
+</html>

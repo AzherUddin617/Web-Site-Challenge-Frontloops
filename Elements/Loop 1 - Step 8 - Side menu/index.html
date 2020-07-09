@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Side menu</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: inherit;
+    }
+    body {
+      box-sizing: border-box;
+      background-color: #363062;
+    }
+    .section-main {
+      min-height: 100vh;
+      position: relative;
+      /* overflow: hidden; */
+      padding-top: 4rem;
+    }
+    #content-main {
+      width: 300px;
+      padding: 2rem;
+      margin: 0 auto;
+      text-align: center;
+      background-color: #00909e;
+      border-radius: 0.5rem;
+      box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.3);
+    }
+    .btn {
+      border: none;
+      outline: none;
+      padding: 1rem;
+      font-weight: 500;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #dae1e7;
+      transition: opacity 0.4s ease;
+    }
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    #content-left {
+      --duration: 0.5s;
+      z-index: -10;
+      height: 100vh;
+      width: 100vw;
+      position: absolute;
+      top: 0;
+      left: 0;
+      /* transition: all 0s ease; */
+      transition-delay: var(--duration);
+    }
+    #content-left .contents {
+      height: 100%;
+      width: 30%;
+      background-color: #00909e;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      transition: transform var(--duration) ease;
+    }
+    #blur-bg {
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity var(--duration) ease;
+    }
+    #content-left-text {
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    #content-left.active {
+      transition: none;
+      z-index: 1;
+    }
+    #content-left.active .contents {
+      transform: translateX(0%);
+    }
+    #content-left.active #blur-bg {
+      
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="section-main">
+
+    <div id="content-main">
+      <button class="btn" id="btn-search">Search</button>
+      <button class="btn" id="btn-run">Run</button>
+    </div>
+
+    <div id="content-left" class="">
+
+      <div id="blur-bg"></div>
+
+      <div class="contents">
+        <h1 id="content-left-text">Whoa! You found me!</h1>
+        <button id="content-left-btn" class="btn">Hide back</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const ids = {
+      btnSearch: 'btn-search',
+      btnRun: 'btn-run',
+      contentLeft: 'content-left',
+      blurBg: 'blur-bg',
+      leftText: 'content-left-text',
+      leftBtn: 'content-left-btn'
+    }
+
+    const btnSearch = document.getElementById(ids.btnSearch);
+    const btnRun = document.getElementById(ids.btnRun);
+    const contentLeft = document.getElementById(ids.contentLeft);
+    const blurBg = document.getElementById(ids.blurBg);
+    const leftText = document.getElementById(ids.leftText);
+    const leftBtn = document.getElementById(ids.leftBtn);
+
+    btnSearch.addEventListener('click', () => {
+      leftText.textContent = 'Whoa! You found me!';
+      leftBtn.textContent = 'Hide back';
+      contentLeft.classList.add('active');
+    });
+    btnRun.addEventListener('click', () => {
+      leftText.textContent = 'Please don\'t run!';
+      leftBtn.textContent = 'Close';
+      contentLeft.classList.add('active');
+    });
+    blurBg.addEventListener('click', () => {
+      contentLeft.classList.remove('active');
+    });
+    leftBtn.addEventListener('click', () => {
+      contentLeft.classList.remove('active');
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+    <title>Multiselect</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+      }
+      body {
+        box-sizing: border-box;
+        background-color: #D3755C;
+        font-family: sans-serif;
+        min-height: 100vh;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .content-box {
+        width: 80vw;
+        max-width: 450px;
+        background-color: #fff;
+        border-radius: 0.5rem;
+        box-shadow: 1px 1px 10px rgba(111, 111, 111, 0.2);
+        padding: 1rem;
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+      .selected-text {
+        padding-bottom: 1rem;
+      }
+      .checkall-tag {
+        font-weight: 700;
+      }
+      .checkall-tag, .tag {
+        padding: 0.5rem;
+        margin: 0.2rem 0;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .tag.active, .checkall-tag.active {
+        background-color: #eee;
+        border-radius: 5px;
+      }
+    </style>
+</head>
+<body>
+    <div class="content-box">
+
+      <p class="selected-text" id="selected-text">Please, select your food</p>
+      <hr class="content__hr">
+      
+      <div class="tags" id="tags">
+        <p class="checkall-tag" id="checkall-tag">Check all</p>
+
+        <p class="tag">Ice-cream</p>
+        <p class="tag">Hot-dog</p>
+        <p class="tag">Popcorn</p>
+        <p class="tag">Cookie</p>
+      </div>
+
+    </div>
+
+    <script>
+      const ids = {
+        selectedText: 'selected-text',
+        checkAllTag: 'checkall-tag',
+        tags: 'tags'
+      }
+      const classes = {
+        active: 'active',
+        checkAllTag: 'checkall-tag',
+        tag: 'tag'
+      }
+
+      const selectedText = document.getElementById(ids.selectedText);
+      const tagsDiv = document.getElementById(ids.tags);
+      const tags = tagsDiv.querySelectorAll('.' + classes.tag);
+      const checkAllTag = document.getElementById(ids.checkAllTag);
+
+      let foods = [];
+      const defaultText = 'Please, select your food';
+      let cMore = 0, count = 0, maxDisplay = 2;
+      let moreText = ` and ${cMore} more`;
+
+      tagsDiv.addEventListener('click', e => {
+        const target = e.target;
+
+        if (target.classList.contains(classes.tag)) {
+
+          if (target.classList.contains(classes.active)) {
+            target.classList.remove(classes.active);
+            if (cMore > 0)
+              cMore--;
+            foods = foods.filter(f => f !== target.textContent);
+            count--;
+          }
+          else {
+            target.classList.add(classes.active);
+            if (count < maxDisplay) {
+              foods.push(target.textContent);
+            }
+            else {
+              foods.push(target.textContent);
+              cMore++;
+            }
+            count++;
+          }
+          
+          if (count === tags.length && !checkAllTag.classList.contains(classes.active)) {
+            checkAllTag.classList.add(classes.active);
+          }
+          else if (count < tags.length && checkAllTag.classList.contains(classes.active)) {
+            checkAllTag.classList.remove(classes.active);
+          }
+
+        }
+        else if (target.classList.contains(classes.checkAllTag)) {
+
+          if (target.classList.contains(classes.active)) {
+            target.classList.remove(classes.active);
+            tags.forEach(tag => {
+              if (tag.classList.contains(classes.active))
+                tag.classList.remove(classes.active);
+            });
+            foods.splice(0, foods.length);
+            count = 0;
+            cMore = 0;
+          }
+          else {
+            target.classList.add(classes.active);
+            tags.forEach(tag => {
+              if (!tag.classList.contains(classes.active)) {
+                tag.classList.add(classes.active);
+                foods.push(tag.textContent);
+              }
+            });
+            count = tags.length;
+            cMore = count - maxDisplay;
+          }
+
+        }
+        console.log(foods);
+
+        let sText = '';
+        for (let i=0; i<Math.min(maxDisplay, foods.length); i++) {
+          if (i > 0)
+            sText += ', ';
+          sText += foods[i];
+        }
+        if (foods.length > maxDisplay)
+          sText += ` and ${cMore} more`;
+
+        selectedText.textContent = sText === "" ? defaultText : sText;
+      });
+    </script>
+</body>
+</html>

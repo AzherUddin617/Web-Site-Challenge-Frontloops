@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+    <title>Dot container</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+      }
+      body {
+        background-color: aquamarine;
+        padding: 2rem;
+        min-height: 100vh;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+      }
+      .content-box {
+        width: 500px;
+        height: 500px;
+        max-width: 80vw;
+        background-color: #fff;
+        border-radius: 5px;
+        -webkit-box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
+                box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+      .dot {
+        --top: 50%;
+        --left: 50%;
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background-color: coral;
+        position: absolute;
+        top: var(--top);
+        left: var(--left);
+        -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+      }
+    </style>
+</head>
+<body>
+  <div class="content-box" id="content-box">
+    <span class="dot" id="dot"></span>
+  </div>
+
+  <script>
+    const varNames = {
+      top: '--top',
+      left: '--left'
+    }
+    const keys = {
+      up: 'ArrowUp',
+      down: 'ArrowDown',
+      right: 'ArrowRight',
+      left: 'ArrowLeft'
+    }
+    const cBox = document.getElementById('content-box');
+    const dot = document.getElementById('dot');
+    const speed = 12 / 10;
+
+    document.addEventListener('keydown', e => {
+      const key = e.key;
+      const rad = dot.getBoundingClientRect().width / 2;
+      const cWidth = cBox.getBoundingClientRect().width;
+      const cHeight = cBox.getBoundingClientRect().height;
+      let top = (dot.getBoundingClientRect().top - cBox.getBoundingClientRect().top + rad) * 100 / cHeight;
+      let left = (dot.getBoundingClientRect().left - cBox.getBoundingClientRect().left + rad) * 100 / cWidth;
+
+      switch (key) {
+        case keys.up:
+          top -= speed;
+          break;
+        case keys.down:
+          top += speed;
+          break;
+        case keys.right:
+          left += speed;
+          break;
+        case keys.left:
+          left -= speed;
+          break;
+      }
+
+      const radP = rad * 100 / cWidth;
+      if (top - radP <= 0)
+        top = radP;
+      else if (top + radP >= 100)
+        top = 100 - radP;
+
+      if (left - radP <= 0)
+        left = radP;
+      else if (left + radP >= 100)
+        left = 100 - radP;
+
+      dot.setAttribute('style', `${varNames.top}: ${top}%; ${varNames.left}: ${left}%`);
+    });
+  </script>
+</body>
+</html>

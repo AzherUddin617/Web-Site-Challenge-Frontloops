@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+    <title>Validation</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        -webkit-box-sizing: inherit;
+                box-sizing: inherit;
+      }
+      body {
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        background-color: #805AC9;
+        min-height: 100vh;
+        padding: 2rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+      }
+      .content-box {
+        width: 80%;
+        max-width: 500px;
+        background-color: #fff;
+        padding: 2rem;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        -webkit-box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
+                box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
+      }
+      .field {
+        padding-bottom: 1rem;
+      }
+      .label {
+        display: block;
+      }
+      .input {
+        display: block;
+        width: 100%;
+        outline: none;
+        border: none;
+        padding: 0.5rem 0;
+        border-bottom: 2px solid #ccc;
+      }
+      #btn-submit {
+        display: block;
+        outline: none;
+        border: none;
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+      }
+      #btn-submit:active {
+        background-color: #ccc;
+      }
+      .warn-text {
+        padding-top: 0.3rem;
+        color: red;
+        display: none;
+      }
+      .warn-text.active {
+        display: block;
+      }
+    </style>
+</head>
+<body>
+    <div class="content-box">
+      <form id="form">
+        <div class="field">
+          <label class="label">Name</label>
+          <input type="text" class="input name" id="input-name">
+          <p class="warn-text">Field is required</p>
+        </div>
+
+        <div class="field">
+          <label class="label">Email</label>
+          <input type="email" class="input email" id="input-email">
+          <p class="warn-text">Enter valid email</p>
+        </div>
+
+        <div class="field">
+          <label class="label">Password</label>
+          <input type="password" class="input password" id="input-pass">
+          <p class="warn-text">Field is required</p>
+        </div>
+
+        <div class="field">
+          <label class="label">Confirm password</label>
+          <input type="password" class="input password" id="input-cpass">
+          <p class="warn-text">Confirmation faild</p>
+        </div>
+
+        <button type="submit" id="btn-submit">Submit</button>
+      </form>
+    </div>
+
+    <script>
+      const ids = {
+        form: 'form',
+        iName: 'input-name',
+        iEmail: 'input-email',
+        iPass: 'input-pass',
+        iCpass: 'input-cpass',
+        btnSubmit: 'btn-submit'
+      }
+      const btnSubmit = document.getElementById(ids.btnSubmit);
+      const iName = document.getElementById(ids.iName);
+      const iEmail = document.getElementById(ids.iEmail);
+      const iPass = document.getElementById(ids.iPass);
+      const iCpass = document.getElementById(ids.iCpass);
+
+      btnSubmit.addEventListener('click', e => {
+        e.preventDefault();
+        
+        if (iName.value === '') {
+          iName.parentElement.querySelector('.warn-text').classList.add('active');
+        }
+        else {
+          iName.parentElement.querySelector('.warn-text').classList.remove('active');
+        }
+
+        if (iPass.value === '') {
+          iPass.parentElement.querySelector('.warn-text').classList.add('active');
+        }
+        else if (iCpass.value === '' || iCpass.value !== iPass.value) {
+          iPass.parentElement.querySelector('.warn-text').classList.remove('active');
+          iCpass.parentElement.querySelector('.warn-text').classList.add('active');
+        }
+        else {
+          iPass.parentElement.querySelector('.warn-text').classList.remove('active');
+          iCpass.parentElement.querySelector('.warn-text').classList.remove('active');
+        }
+
+        if (!isValid(iEmail) && iEmail.value !== '') {
+          iEmail.parentElement.querySelector('.warn-text').classList.add('active');
+        }
+        else {
+          iEmail.parentElement.querySelector('.warn-text').classList.remove('active');
+        }
+      });
+
+    function isValid(mail) {
+
+      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail.value)) {
+        return (true);
+      }
+
+      return (false);
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+body {
+  box-sizing: border-box;
+  background-color: #82B9F9;
+  font-family: "Roboto", sans-serif;
+
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-box {
+  --primaryColor: #6497F8;
+  --mainBorder: 3px solid var(--primaryColor);
+  --mainRadius: 0.5rem;
+
+  width: 90%;
+  max-width: 800px;
+  padding: 2rem;
+  background-color: #fff;
+  border: 2px solid #f3f3f3;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2); 
+}
+
+.content {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+/*** Content Desktop ***/
+
+.content.desktop {
+  /* overflow: hidden; */
+  display: inline-flex;
+}
+.content__btn {
+  padding: 1rem;
+  border: var(--mainBorder);
+  border-left: none;
+  transition-property: color, background-color;
+  transition-duration: 0.2s;
+  cursor: pointer;
+}
+.content__btn:hover:not(.active) {
+  background-color: #CED8EA;
+}
+.content__btn.first {
+  border: var(--mainBorder);
+  border-radius: var(--mainRadius) 0 0 var(--mainRadius);
+}
+.content__btn.last {
+   border-radius: 0 var(--mainRadius) var(--mainRadius) 0;
+}
+.content__btn.active {
+  background-color: var(--primaryColor);
+  color: #fff;
+}
+
+.content.mobile {
+  display: none;
+}
+
+/*** Content Mobile ***/
+
+@media screen and (max-width: 786px) {
+  .content.desktop {
+     display: none;
+  }
+
+  .content.mobile {
+    width: 100%;
+    border: var(--mainBorder);
+    border-radius: var(--mainRadius);
+    padding: 1rem;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  .content__select {
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+    width: 100%;
+    padding: 0.5rem 0;
+    background-color: #f4f4f4;
+    border: 1px solid #999;
+    border-radius: var(--mainRadius);
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+    /* display: none; */
+    z-index: -10;
+    opacity: 0;
+  }
+  .content__select.active {
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    opacity: 1;
+  }
+  .content__option {
+    padding: 0.2rem 2rem;
+    transition-property: background-color, color;
+    transition-duration: 0.3s;
+    cursor: pointer;
+  }
+  .content__option:hover {
+    color: #fff;
+    background-color: var(--primaryColor);
+  }
+}

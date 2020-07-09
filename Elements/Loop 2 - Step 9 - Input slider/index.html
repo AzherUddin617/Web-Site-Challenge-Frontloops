@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+    <title>Input slider</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+      }
+      body {
+        background-color: #F2A785;
+        min-height: 100vh;
+        padding: 2rem 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .content-box {
+        width: 80%;
+        max-width: 600px;
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        -webkit-box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
+                box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
+      } 
+      #slider-value {
+        font-size: 2rem;
+        font-weight: 500;
+      }
+      .slider {
+        width: 100%;
+        padding: 2rem 0;
+      }
+      .slider-bar {
+        --sliderHeight: 0.6rem;
+        height: var(--sliderHeight);
+        width: 100%;
+        background-color: #ddd;
+        border-radius: 100px;
+      }
+      .slider-fill {
+        --fillWidth: 50%;
+        width: var(--fillWidth);
+        height: var(--sliderHeight);
+        background-color: #777;
+        border-radius: 100px;
+        position: relative;
+      }
+      .slider-hand {
+        width: 2rem;
+        height: 2rem;
+        background-color: #fff;
+        border: 4px solid #bbb;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        right: 0%;
+        -webkit-transform: translate(50%, -50%);
+            -ms-transform: translate(50%, -50%);
+                transform: translate(50%, -50%);
+        z-index: 1;
+        cursor: pointer;
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        -webkit-transition: border-color 0.3s;
+        -o-transition: border-color 0.3s;
+        transition: border-color 0.3s;
+      }
+      .slider-hand:hover, .slider-hand:active {
+        border-color: #999;
+      }
+    </style>
+</head>
+<body>
+  <div class="content-box">
+
+    <p id="slider-value">50</p>
+
+    <div class="slider">
+      <div class="slider-bar">
+        <div class="slider-fill">
+          <span class="slider-hand"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const sliderValue = document.getElementById('slider-value');
+    const slider = document.querySelector('.slider-bar');
+    const sliderFill = document.querySelector('.slider-fill');
+    const sliderHand = document.querySelector('.slider-hand');
+
+    sliderHand.addEventListener('mousedown', e => {
+      const offsetX = e.pageX - sliderFill.getBoundingClientRect().right;
+
+      const onMove = e => {
+        const fillW = (e.pageX - offsetX) - slider.getBoundingClientRect().left;
+        let fillP = (fillW * 100) / slider.getBoundingClientRect().width;
+        if (fillP < 0)
+          fillP = 0;
+        else if (fillP > 100)
+          fillP = 100;
+
+        if (fillP >= 0 && fillP <= 100) {
+          sliderValue.textContent = Math.round(fillP);
+          sliderFill.setAttribute('style', `--fillWidth: ${fillP}%`);
+        }
+      }
+      const onUp = e => {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      }
+
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    })
+  </script>
+</body>
+</html>
+
+<!--
+    Build an input slider component which you can drag to change displayed value.
+    Should also store its value in a real input to be able to use that in forms.
+    Slider bar should be clickable to move handle there.
+-->

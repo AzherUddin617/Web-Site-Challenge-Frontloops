@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Progress navigation</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+</head>
+<body>
+  <div class="content-box">
+    <form class="content__form">
+      <input type="number" class="content__input" placeholder="Enter tab index" id="submit-input">
+      <button type="submit" class="content__btn" id="submit-btn">Change tab</button>
+    </form>
+    <div class="content__tabs" id="content-tabs">
+      <p class="tab-text active">poSitive</p>
+      <p class="tab-text">nEgativE</p>
+      <p class="tab-text">NeutraL</p>
+    </div>
+    <p class="content__active-tab-text" id="active-tab-text">Positive content</p>
+  </div>
+
+  <!-- JS -->
+  <script src="dom.js"></script>
+</body>
+</html>

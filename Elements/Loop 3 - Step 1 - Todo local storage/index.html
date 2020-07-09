@@ -1,0 +1,233 @@
+<!doctype html>
+<html>
+<head>
+    <title>Todo local storage</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+      }
+      body {
+        background-color: #6EAFA0;
+        min-height: 100vh;
+        padding: 2rem 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: start;
+            -ms-flex-align: start;
+                align-items: flex-start;
+      }
+      .content-box {
+        width: 80%;
+        max-width: 500px;
+        padding: 1rem;
+        margin-top: 20vh;
+        border-radius: 0.5rem;
+        background-color: #fff;
+        border: 1px solid #ccc;
+      }
+      .add-task {
+        padding-bottom: 1rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+      }
+      .add-task .input {
+        -webkit-box-flex: 1;
+            -ms-flex-positive: 1;
+                flex-grow: 1;
+        padding: 0.5rem 0;
+        border: none;
+        outline: none;
+        border-bottom: 2px solid #ddd;
+        margin-right: 0.3rem;
+      }
+      .btn {
+        border: none;
+        outline: none;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      }
+      .task-reset-btn {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+      .tasks {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: start;
+            -ms-flex-align: start;
+                align-items: flex-start;
+      }
+      .task-name {
+        display: inline-block;
+        font-size: 1.2rem;
+        font-weight: 500;
+        line-height: 1;
+        margin: 0.5rem 0;
+        cursor: pointer;
+        position: relative;
+      }
+      .task-name::before {
+        display: block;
+        content: '';
+        width: 100%;
+        height: 2px;
+        background-color: #000;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        -webkit-transform-origin: left;
+            -ms-transform-origin: left;
+                transform-origin: left;
+        -webkit-transform: scaleX(0);
+            -ms-transform: scaleX(0);
+                transform: scaleX(0);
+        -webkit-transition: -webkit-transform 0.4s ease;
+        transition: -webkit-transform 0.4s ease;
+        -o-transition: transform 0.4s ease;
+        transition: transform 0.4s ease;
+        transition: transform 0.4s ease, -webkit-transform 0.4s ease;
+      }
+      .task-name.removed::before {
+        -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+                transform: scale(1);
+      }
+    </style>
+</head>
+<body>
+  <div class="content-box">
+    <div class="add-task">
+      <input type="text" class="input" id="add-task-input" placeholder="Enter task name">
+      <button class="btn" id="add-task-btn">Add task</button>
+    </div>
+
+    <button class="btn task-reset-btn" id="task-reset-btn">Reset tasks</button>
+
+    <div class="tasks" id="tasks">
+      <p class="task-name">task</p>
+      <p class="task-name">task</p>
+    </div>
+  </div>
+
+  <script>
+    const names = {
+      dataName: 'taskData',
+      taskName: 'task-name',
+      removed: 'removed'
+    };
+    const taskInput = document.getElementById('add-task-input');
+    const taskBtn = document.getElementById('add-task-btn');
+    const resetBtn = document.getElementById('task-reset-btn');
+    const tasksDiv = document.getElementById('tasks');
+
+    const tasksData = [];
+    const storedData = JSON.parse(window.localStorage.getItem(names.dataName));
+    if (storedData) {
+      tasksData.push(...storedData);
+      console.log(tasksData);
+      renderTasks();
+    }
+
+    function creatUniqueId (value) {
+      let id = value.toLowerCase().replace(/\s/g, '') + '-';
+      const length = value.length;
+      let sum = 0;
+      for (let i=0; i<length; i++) {
+        if (i <= 5)
+          id += value.charCodeAt(i);
+        sum += value.charCodeAt(i);
+        sum = sum % 999;
+      }
+      id += sum;
+      id += '-' + Number.parseInt(Math.random() * 100);
+      console.log('id', id);
+      return id;
+    }
+
+    function submitTask () {
+      const value = taskInput.value;
+      if (value !== '') {
+        const id = creatUniqueId(value);
+        const task = creatTask(id, value, false);
+        tasksDiv.append(task);
+        taskInput.value = '';
+
+        tasksData.push(createData(id, value, false));
+        saveTasks();
+      }
+    }
+
+    function creatTask (id, taskName, removed) {
+      const p = document.createElement('p');
+      p.id = id;
+      p.className = names.taskName + (removed ? ' ' + names.removed : '');
+      p.textContent = taskName;
+      return p;
+    }
+
+    function renderTasks () {
+      tasksDiv.innerHTML = '';
+      tasksData.forEach(data => tasksDiv.append(creatTask(data.id, data.name, data.removed)));
+    }
+
+    function createData (id, name, removed) {
+      const data = {
+        id : id,
+        name: name,
+        removed: removed
+      };
+      return data;
+    }
+
+    function saveTasks () {
+      window.localStorage.setItem(names.dataName, JSON.stringify(tasksData));
+    }
+
+    taskBtn.addEventListener('click', submitTask);
+    document.addEventListener('keydown', e => {
+      if (e.key.toLowerCase() === 'enter')
+        submitTask();
+    });
+    resetBtn.addEventListener('click', e => {
+      tasks.innerHTML = '';
+      tasksData.splice(0, tasksData.length);
+      saveTasks();
+    });
+    tasksDiv.addEventListener('click', e => {
+      e.preventDefault();
+      const target = e.target;
+      if (target.classList.contains(names.taskName)) {
+        target.classList.toggle(names.removed);
+        console.log(tasksData);
+        const targetedData = tasksData.find(data => data.id === target.id);
+        targetedData.removed = !targetedData.removed;
+        console.log(tasksData);
+        saveTasks();
+      }
+    })
+  </script>
+</body>
+</html>
+<!--
+    Build a a form that adds a new task to the list.
+    Tasks can be marked completed by clicking on them and reset by clicking the reset button.
+    All changes should be saved after page reload.
+-->

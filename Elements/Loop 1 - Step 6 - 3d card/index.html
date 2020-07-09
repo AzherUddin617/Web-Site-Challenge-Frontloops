@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <title>3d card</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+      }
+      body {
+        box-sizing: border-box;
+        background-color: #27496d;
+        min-height: 100vh;
+        padding: 2rem 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        perspective: 800px;
+      }
+      #box {
+        width: 80vw;
+        max-width: 60vh;
+        height: 60vh;
+        max-height: 80vw;
+        background-color: #dae1e7;
+        border-radius: 5px;
+        box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.2);
+        transform-style: preserve-3d;
+        /* transform: rotate3d(-1, -1, 0, -10deg); */
+        transition: transform 0.1s ease;
+      }
+    </style>
+</head>
+<body>
+  <div id="box"></div>
+
+  <script>
+    const box = document.getElementById('box');
+    const maxDeg = 10;
+
+    class Vector {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+      }
+    }
+
+    addEventListener('mousemove', e => {
+      const mousePos = new Vector(e.clientX, e.clientY);
+      const boxSize = new Vector(box.getBoundingClientRect().width, box.getBoundingClientRect().height);
+      const boxPos = new Vector(
+        box.getBoundingClientRect().x + boxSize.x / 2, 
+        box.getBoundingClientRect().y + boxSize.y / 2
+      );
+      const dir = new Vector(mousePos.x - boxPos.x, mousePos.y - boxPos.y);
+      const dis = (dir.x ** 2 + dir.y ** 2) ** 0.5;
+      const maxDir = Math.max(Math.abs(dir.x), Math.abs(dir.y));
+
+      const cord = new Vector(dir.x / maxDir, dir.y / maxDir);
+      cord.y *= -1;
+
+      let deg = dis / 40;
+      deg = deg < maxDeg ? deg : maxDeg;
+
+      console.log(dir, dis, cord);
+
+      box.style.transform = `rotate3d(${cord.y}, ${cord.x}, 0, ${deg}deg)`;
+    });
+  </script>
+</body>
+</html>

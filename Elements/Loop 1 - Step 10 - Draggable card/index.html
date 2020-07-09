@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Draggable card</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: inherit;
+    }
+    body {
+      box-sizing: border-box;
+      background-color: #222831;
+      position: relative;
+    }
+    #box {
+      width: 12rem;
+      height: 12rem;
+      background-color: #c1a57b;
+      border-radius: 0.3rem;
+      box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.3);
+      cursor: move;
+
+      position: absolute;
+      top: 4rem;
+      left: 4rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box"></div>
+
+  <script>
+    const box = document.getElementById('box');
+    let offsetX, offsetY, space = 16;
+
+    box.addEventListener('mousedown', e => {
+      offsetX = e.clientX - box.offsetLeft;
+      offsetY = e.clientY - box.offsetTop;
+      document.addEventListener('mousemove', onMove);
+    });
+    box.addEventListener('mouseup', e => {
+      document.removeEventListener('mousemove', onMove);
+    })
+
+    function onMove (e) {
+      box.style.top = `${e.clientY - offsetY}px`;
+      box.style.left = `${e.clientX - offsetX}px`;
+    }
+  </script>
+</body>
+
+</html>

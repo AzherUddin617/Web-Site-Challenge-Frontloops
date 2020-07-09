@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+    <title>Auto type</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+      }
+      body {
+        box-sizing: border-box;
+        background-color: #f6d743;
+        padding: 2rem 0;
+        font-family: "Roboto", sans-serif;
+      }
+      #content-text {
+        font-size: 3rem;
+        padding-top: 3rem;
+        padding-left: 15vw;
+      }
+      #text-space {
+        visibility: hidden;
+      }
+      .text-bar {
+        display: inline-block;
+        width: 3px; 
+        height: 3.1rem;
+        background-color: #000;
+        transform: translateY(0.4rem);
+        animation: textBarAnim 1.6s ease infinite backwards;
+      }
+      @keyframes textBarAnim {
+        35%, 65% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+    </style>
+</head>
+<body>
+    <h1 id="content-text">
+      We can help you with 
+      <span id="popup-text"></span><span class="text-bar"></span>
+      <span id="text-space"></span>
+    </h1>
+
+    <script>
+      const ids = {
+        contentText: 'content-text',
+        popopText: 'popup-text',
+        textSpace: 'text-space'
+      }
+
+      const contentText = document.getElementById(ids.contentText);
+      const popupText = document.getElementById(ids.popopText);
+      const textSpace = document.getElementById(ids.textSpace);
+
+      const words = ['frontend', 'backend', 'testing', 'design'];
+      const length = words.length, duration = 250, delay = 2500;
+      let currentIndex = 0;
+      
+      // let maxStr = '';
+      // for (w of words) {
+      //   if (w.length > maxStr.length)
+      //     maxStr = w;
+      // }
+      // textSpace.textContent = maxStr;
+
+      popWords();
+      function popWords() {
+        let i = 0;
+        popupText.textContent = "";
+        let popIntr = setInterval(() => {
+          popupText.textContent += words[currentIndex][i];
+
+          i++;
+          if (i >= words[currentIndex].length) {
+            clearInterval(popIntr);
+            currentIndex = currentIndex < length - 1 ? currentIndex + 1 : 0;
+            setTimeout(popWords, delay);
+          }
+        }, duration);
+      }
+    </script>
+</body>
+</html>
